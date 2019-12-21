@@ -1,0 +1,6 @@
+h1 Hi #{name}
+h2 Here are your crypto currency prices:
+
+each val in currencies
+    h3= val.name_full + ' : ' + val.price + '$  (Max supply : ' + val.max_supply + ')'
+

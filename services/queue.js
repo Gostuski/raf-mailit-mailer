@@ -9,7 +9,7 @@ async function connectQueue() {
     }
 
     connection.createChannel((err1, channel) => {
-      if (err) {
+      if (err1) {
         console.log('Error creating channel.');
         return;
       }
@@ -21,8 +21,7 @@ async function connectQueue() {
       channel.prefetch(1);
 
       channel.consume(queue, async (message) => {
-        const data = JSON.parse(message.content);
-
+        const data = JSON.parse(message.content.toString());
         sendMail(data)
           .then(channel.ack(message))
           .catch((error) => console.log(error));

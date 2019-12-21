@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
-
+const { EmailTemplate } = require('email-templates');
+const path = require('path');
 
 async function sendMailPromise(data) {
   return new Promise((resolve, reject) => {
@@ -13,23 +14,41 @@ async function sendMailPromise(data) {
       },
     });
 
-    const mailOptions = {
-      from: 'raf.mailit@gmail.com',
-      to: 'dusangp@gmail.com',
-      subject: 'Test',
-      html: `<p><strong>${data}</strong></p>`,
+    const myTemplate = new EmailTemplate(path.join(__dirname, '../templates'));
+    const locals = {
+      name: data.name,
+      currencies: data.currencies,
     };
-
-    transporter.sendMail(mailOptions, (err, info) => {
-      transporter.close();
-      if (err) reject(new Error('Failed to send mail'));
-      else {
+    myTemplate.render(locals, (err, result) => {
+      if (err) {
+        console.error(err);
+      }
+      const mailOptions = {
+        from: 'raf.mailit@gmail.com',
+        to: data.email,
+        subject: 'Test',
+        html: result.html,
+      };
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          reject(new Error('Failed to send mail'));
+        }
         console.log(info);
         resolve(true);
-      }
+      });
     });
+
+    // transporter.sendMail(mailOptions, (err, info) => {
+    //   transporter.close();
+    //   if (err) reject(new Error('Failed to send mail'));
+    //   else {
+    //     console.log(info);
+    //     resolve(true);
+    //   }
+    // });
   });
 }
+
 async function sendMail(data) {
   await sendMailPromise(data);
 }
