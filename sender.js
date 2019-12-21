@@ -19,12 +19,12 @@ amqp.connect('amqp://localhost', (err, connection) => {
       email: 'dusangp@gmail.com',
       currencies: [
         {
-          name_full: 'bitcoin (BTC)',
+          name_full: 'Bitcoin (BTC)',
           price: 7860,
           max_supply: 300000,
         },
         {
-          name_full: 'six eleven (611)',
+          name_full: 'Bix eleven (611)',
           price: 1203.23,
           max_supply: 21000,
         },
