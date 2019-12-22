@@ -23,8 +23,8 @@ async function connectQueue() {
       channel.consume(queue, async (message) => {
         const data = JSON.parse(message.content.toString());
         sendMail(data)
-          .then(channel.ack(message))
-          .catch((error) => console.log(error));
+          .then(() => channel.ack(message))
+          .catch((error) => console.error('ERROR: ', error));
       }, { noAck: false });
     });
   });

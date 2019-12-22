@@ -22,11 +22,12 @@ async function sendMailPromise(data) {
     myTemplate.render(locals, (err, result) => {
       if (err) {
         console.error(err);
+        reject(new Error('Failed to load template.'));
       }
       const mailOptions = {
         from: 'raf.mailit@gmail.com',
         to: data.email,
-        subject: 'Test',
+        subject: 'Cryptoconnect newsletter',
         html: result.html,
       };
       transporter.sendMail(mailOptions, (error, info) => {
@@ -37,15 +38,6 @@ async function sendMailPromise(data) {
         resolve(true);
       });
     });
-
-    // transporter.sendMail(mailOptions, (err, info) => {
-    //   transporter.close();
-    //   if (err) reject(new Error('Failed to send mail'));
-    //   else {
-    //     console.log(info);
-    //     resolve(true);
-    //   }
-    // });
   });
 }
 
